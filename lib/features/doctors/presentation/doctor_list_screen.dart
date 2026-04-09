@@ -1,4 +1,5 @@
 import 'package:doctor_finder/features/doctors/domain/doctor_model.dart';
+import 'package:doctor_finder/features/doctors/presentation/doctor_details_screen.dart';
 import 'package:doctor_finder/features/doctors/presentation/doctor_list_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,7 @@ class DoctorListScreen extends ConsumerWidget {
         error: (error, stack) => Center(child: Text('Error: $error')),
         data: (doctors) {
           final filtered =
-              doctors
+                doctors
                   .where(
                     (doctor) =>
                         doctor.doctorName.toLowerCase().contains(searchQuery.toLowerCase()),
@@ -41,30 +42,41 @@ class DoctorListScreen extends ConsumerWidget {
                     itemCount: filtered.length,
                       itemBuilder:(context,index){
                         final doctor=filtered[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  doctor.doctorName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                        return InkWell(
+                          onTap: (){
+                            print(doctor.doctorId + doctor.locationId);
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => DoctorDetailsScreen(
+                                docId: doctor.doctorId,
+                                orgId: doctor.locationId,
+                              ),
+                            ),);
+                          },
+                          child: Card(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    doctor.doctorName,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(doctor.specialityEnglish),
-                                const SizedBox(height: 4),
-                                Text(doctor.locationName),
-                                const SizedBox(height: 4),
-                                Text('Rs. ${doctor.charges.initialCharges}'),
-                              ],
+                                  const SizedBox(height: 4),
+                                  Text(doctor.specialityEnglish),
+                                  const SizedBox(height: 4),
+                                  Text(doctor.locationName),
+                                  const SizedBox(height: 4),
+                                  Text('Rs. ${doctor.charges.initialCharges}'),
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -74,40 +86,6 @@ class DoctorListScreen extends ConsumerWidget {
               ]
           );
         },
-
-        // data: (doctors)=>ListView.builder(
-        //     itemCount: doctors.length,
-        //     itemBuilder: (context,index) {
-        //       final doctor=doctors[index];
-        //       return Card(
-        //         margin: const EdgeInsets.symmetric(
-        //           horizontal: 16,
-        //           vertical: 8,
-        //         ),
-        //         child: Padding(
-        //           padding: const EdgeInsets.all(16),
-        //           child : Column(
-        //             crossAxisAlignment: CrossAxisAlignment.start,
-        //             children: [
-        //               Text(
-        //                 doctor.doctorName,
-        //                 style: const TextStyle(
-        //                   fontSize: 16,
-        //                   fontWeight: FontWeight.bold,
-        //                 ),
-        //               ),
-        //               const SizedBox(height: 4),
-        //               Text(doctor.specialityEnglish),
-        //               const SizedBox(height: 4),
-        //               Text(doctor.locationName),
-        //               const SizedBox(height: 4),
-        //               Text('Rs. ${doctor.charges.initialCharges}'),
-        //             ],
-        //           ),
-        //         ),
-        //       );
-        //
-        //     }),
       ),
     );
   }
