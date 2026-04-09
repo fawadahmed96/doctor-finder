@@ -1,3 +1,4 @@
+import 'package:doctor_finder/core/theme/app_theme.dart';
 import 'package:doctor_finder/features/doctors/presentation/doctor_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,106 +40,110 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     });
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(24.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Doctor finder',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+              const SizedBox(height: 60),
+              // Logo/Header section
+              Center(
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Icon(
+                    Icons.local_hospital,
+                    color: Colors.white,
+                    size: 40,
+                  ),
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 24),
+              Center(
+                child: Text(
+                  'Doctor Finder',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.textPrimary,
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  'Sign in to your account',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.textSecondary,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 48),
+              // Email field
+              Text(
+                'Username',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 8),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  border: OutlineInputBorder(),
+                decoration: const InputDecoration(
+                  hintText: 'Enter your username',
+                  prefixIcon: Icon(Icons.person_outline),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 20),
+              // Password field
+              Text(
+                'Password',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 8),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
+                decoration: const InputDecoration(
+                  hintText: 'Enter your password',
+                  prefixIcon: Icon(Icons.lock_outline),
                 ),
               ),
-              SizedBox(height: 24),
-              if (state.errorMsg != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Text(
-                    state.errorMsg!,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
+              const SizedBox(height: 32),
+              // Sign In button
               SizedBox(
                 width: double.infinity,
+                height: 52,
                 child: ElevatedButton(
-                  onPressed:
-                      state.isLoading
-                          ? null
-                          : () {
-                            ref
-                                .read(signInProvider.notifier)
-                                .signIn(
-                                  _emailController.text,
-                                  _passwordController.text,
-                                );
-                          },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child:
-                        state.isLoading
-                            ? CircularProgressIndicator(color: Colors.white)
-                            : Text('Sign In'),
+                  onPressed: state.isLoading
+                      ? null
+                      : () {
+                    ref.read(signInProvider.notifier).signIn(
+                      _emailController.text,
+                      _passwordController.text,
+                    );
+                  },
+                  child: state.isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                    'Sign In',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
-
-              // SizedBox(
-              //   width: double.infinity,
-              //   child: ElevatedButton(
-              //     onPressed: () {
-              //       if (state.errorMsg != null) {
-              //         Padding(
-              //           padding: EdgeInsets.only(bottom: 16),
-              //           child: Text(
-              //             state.errorMsg!,
-              //             style: TextStyle(color: Colors.red),
-              //           ),
-              //         );
-              //         SizedBox(
-              //           width: double.infinity,
-              //           child: ElevatedButton(
-              //               onPressed:state.isLoading?null:
-              //               (){
-              //                 ref.read(signInProvider.notifier).signIn(
-              //                   'test@test.com',
-              //                   '123456',
-              //                 );
-              //               },
-              //             child: Padding(
-              //               padding: const EdgeInsets.all(16.0),
-              //               child: state.isLoading?
-              //               CircularProgressIndicator(color: Colors.white,):Text("Sign In"),
-              //             ),
-              //           ),
-              //         );
-              //       }
-              //     },
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(16.0),
-              //       child: Text('Sign In'),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),

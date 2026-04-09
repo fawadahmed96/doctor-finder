@@ -1,3 +1,4 @@
+import 'package:doctor_finder/core/theme/app_theme.dart';
 import 'package:doctor_finder/features/auth/presentation/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget{
    return MaterialApp(
      title: 'Doctor Finder',
      debugShowCheckedModeBanner: false,
+     theme: AppTheme.lightTheme,
      home: SignInScreen(),
    );
   }
